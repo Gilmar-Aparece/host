@@ -134,6 +134,7 @@ body {
 }
 
 /* glass pill behind the header content.
+   Hidden at the top of the page; fades in once the page is scrolled.
    (blur lives here, not on .nav, so it can see the page behind it) */
 .nav::before {
   content: "";
@@ -149,19 +150,18 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
     inset 0 -1px 0 rgba(255, 255, 255, 0.04),
     0 10px 40px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translateY(-6px);
   transition:
-    background 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  pointer-events: none;
 }
 
-/* added by script once the page is scrolled: a touch darker for readability */
+/* added by script once the page is scrolled */
 .nav.is-scrolled::before {
-  background: linear-gradient(135deg, rgba(40, 48, 66, 0.55), rgba(14, 18, 28, 0.5));
-  border-color: rgba(255, 255, 255, 0.14);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    0 14px 44px rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  transform: none;
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
