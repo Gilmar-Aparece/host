@@ -477,5 +477,15 @@ Live in 48s &rarr; <span class="url">https://your-app.example.com</span></pre>
   setTimeout(loop,FIRST_DELAY);
 })();
 </script>
+<script>
+/* sticky header: add a backdrop once the page scrolls */
+(function(){
+  var nav=document.querySelector('.nav');
+  if(!nav) return;
+  function update(){nav.classList.toggle('is-scrolled',window.scrollY>24)}
+  update();
+  window.addEventListener('scroll',update,{passive:true});
+})();
+</script>
 </body>
 </html>
