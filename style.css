@@ -131,21 +131,43 @@ body {
   padding-left: var(--edge);
   padding-right: var(--edge);
   z-index: 50;
-  background: transparent;
-  border-bottom: 1px solid transparent;
-  transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease,
-    -webkit-backdrop-filter 0.25s ease,
-    backdrop-filter 0.25s ease;
 }
 
-/* added by script once the page is scrolled */
-.nav.is-scrolled {
-  background: rgba(0, 0, 0, 0.72);
-  border-bottom-color: rgba(255, 255, 255, 0.08);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  backdrop-filter: blur(14px) saturate(1.2);
+/* glass pill behind the header content.
+   (blur lives here, not on .nav, so it can see the page behind it) */
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: 8px max(8px, calc(var(--edge) - 22px));
+  z-index: -1;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  backdrop-filter: blur(18px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 40px rgba(0, 0, 0, 0.35);
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* added by script once the page is scrolled: a touch darker for readability */
+.nav.is-scrolled::before {
+  background: linear-gradient(135deg, rgba(40, 48, 66, 0.55), rgba(14, 18, 28, 0.5));
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 14px 44px rgba(0, 0, 0, 0.5);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav::before {
+    background: rgba(16, 20, 30, 0.88);
+  }
 }
 
 .logo {
@@ -423,6 +445,9 @@ button:focus-visible {
   .nav {
     height: max(58px, calc(67 * var(--u)));
   }
+  .nav::before {
+    inset: 6px max(8px, calc(var(--edge) - 22px));
+  }
   .nav-links,
   .nav-actions {
     display: none;
@@ -468,17 +493,19 @@ button:focus-visible {
   }
   .menu {
     position: fixed;
-    top: calc(max(58px, calc(67 * var(--u))) - 6px);
-    right: var(--edge);
+    top: calc(max(58px, calc(67 * var(--u))) + 2px);
+    right: max(8px, calc(var(--edge) - 22px));
     width: min(320px, calc(100% - 2 * var(--gutter)));
-    background: rgba(10, 10, 12, 0.86);
-    -webkit-backdrop-filter: blur(22px);
-    backdrop-filter: blur(22px);
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(60, 70, 96, 0.5), rgba(14, 18, 28, 0.62));
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    backdrop-filter: blur(24px) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.24),
+      0 24px 60px rgba(0, 0, 0, 0.55);
+    border-radius: 22px;
     padding: 10px 8px 12px;
     flex-direction: column;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
     transform-origin: top right;
     max-height: calc(100dvh - 80px);
     overflow-y: auto;
@@ -541,6 +568,9 @@ button:focus-visible {
   .nav {
     height: 56px;
   }
+  .nav::before {
+    inset: 6px max(8px, calc(var(--gutter) - 12px));
+  }
   .logo {
     font-size: 20px;
     letter-spacing: -0.3px;
@@ -601,9 +631,9 @@ button:focus-visible {
     height: 11px;
   }
   .menu {
-    top: 50px;
-    left: var(--gutter);
-    right: var(--gutter);
+    top: 58px;
+    left: max(8px, calc(var(--gutter) - 12px));
+    right: max(8px, calc(var(--gutter) - 12px));
     width: auto;
   }
   .menu a {
